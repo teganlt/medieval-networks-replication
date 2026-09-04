@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this replication package, please cite the paper."
+title: "Replication package for 'The Reign of the Saints: Medieval Aristocratic Networks and the Origins of Western Law'"
+authors:
+  - family-names: Truitt
+    given-names: Tegan L.
+    affiliation: "Winklevoss School of Business, Grove City College"
+type: software
+repository-code: "https://github.com/teganlt-cyber/medieval-networks-replication"
+preferred-citation:
+  type: article
+  title: "The Reign of the Saints: Medieval Aristocratic Networks and the Origins of Western Law"
+  authors:
+    - family-names: Truitt
+      given-names: Tegan L.
+  year: 2026
+  notes: "Working paper, Grove City College."
