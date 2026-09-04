@@ -148,6 +148,14 @@ The extraction prompt is `doc_match_prompt.py` (rendered by 09/10); the coding
 prompt and JSON schema are in `12_recode_subjects.py`. Both are reproduced
 verbatim in the draft's appendix.
 
+### Appendix C — partition-robustness sweep
+| Claim | Source (stage) | Output |
+|---|---|---|
+| 50 Louvain redraws: secterr β median 0.0342, range [0.0174, 0.0412], all positive; bloc-clustered p<.05 in 47/50 (worst .119); two-way p<.05 in 40/50 (worst .155) | sweep_partition.py (11.1, optional `--sweep`) | validation/partition_sweep/partition_seed_sweep.csv — **verified** (seeded; seed-level reruns reproduce to the digit) |
+| β rises with partition quality: cor(β, modularity) = +0.59; cor(β, agreement with frozen reach) = +0.69; attenuated draws are lower-quality partitions | same CSV (diagnostics computable from its columns) | same |
+| Leiden draw (Q = 0.837, highest of any partition): secterr 0.0379 (p₂ᵥ .0027); total 0.0407 (p₂ᵥ .0355) | sweep_partition.py (11.2, `--leiden`) | same |
+| frozen (paper) partition: Q = 0.8291, 579 blocs — below the sweep's median β, finest partition observed | reference row `algorithm=frozen_paper` in the same CSV | same |
+
 ## Frozen AI artifacts (data/frozen/) — provenance
 
 | File | What it is | Producing process |

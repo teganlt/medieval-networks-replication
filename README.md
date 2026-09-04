@@ -96,9 +96,15 @@ The two marriage-bloc partitions (`data/frozen/patriline_bloc_assignment.csv`
 and its pre-1300 counterpart) are also frozen: Louvain community detection is
 stochastic across runs and library versions, so the paper's partitions are the
 package default. `python run_all.py --rerun-louvain` regenerates both from
-scratch (stages 5.2 and 5.11); the paper's robustness appendix shows the
-results are not partition-dependent, and a regenerated pre-1300 partition
-gives a somewhat larger coefficient (see MANIFEST DISCREPANCIES note 5).
+scratch (stages 5.2 and 5.11), and `python run_all.py --sweep` (or
+`python scripts/sweep_partition.py` directly, after a full pipeline run)
+quantifies the partition dependence: 50 seeded Louvain redraws of the main
+partition plus one Leiden draw, re-estimating the headline 2SLS per draw.
+The run backing the paper's partition-robustness numbers ships at
+`validation/partition_sweep/partition_seed_sweep.csv` (seeded, so a re-run
+reproduces it on a fixed environment; ~45 minutes). A regenerated pre-1300
+partition also gives a somewhat larger coefficient (see MANIFEST
+DISCREPANCIES note 5).
 
 Human-audit inputs (the match-audit verdicts coded by the author and a blind
 research assistant, and the hand heiress rulings) ship under `validation/`.

@@ -144,7 +144,13 @@ STAGES = [
     ("10.2", "rebuild blitz FP audit sample (researcher 100; seed 43)", py("v94_build_blitz_fp_audit.py")),
     ("10.3", "pooled human audit precision (186/195; Fisher; terciles)", py("v95_pooled_precision.py")),
     ("10.4", "cross-model + preliminary human validation tallies (108/108; 25/25)", py("v96_match_validation_tallies.py")),
+
+    # ---- stage 11: partition-robustness sweep (OPTIONAL: run with --sweep; ~45 min) ----
+    ("11.1", "partition seed sweep: 50 Louvain redraws of the marriage-bloc partition", py("sweep_partition.py", "--n", "50")),
+    ("11.2", "Leiden draw of the marriage-bloc partition (resolution-limit-free)", py("sweep_partition.py", "--leiden")),
 ]
+
+SWEEP_STAGES = {"11.1", "11.2"}  # only run with --sweep (the paper's run ships at validation/partition_sweep/)
 
 SKIP_BY_DEFAULT = {"5.2", "5.11"}  # frozen Louvain partitions (main + pre-1300) are the paper's
 
@@ -154,6 +160,8 @@ def main():
     ap.add_argument("--from", dest="from_stage", default=None)
     ap.add_argument("--only", default=None)
     ap.add_argument("--rerun-louvain", action="store_true")
+    ap.add_argument("--sweep", action="store_true",
+                    help="also run the partition-robustness sweep (stages 11.x, ~45 min)")
     args = ap.parse_args()
 
     stages = STAGES
