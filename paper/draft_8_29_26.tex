@@ -1196,6 +1196,79 @@ The timing of the bloc partition raises a third mechanical worry, however. The m
 
 I therefore rebuild the partition on pre-$1300$ marriages alone, with striking results. The repartition produces a very different grouping; $265$ blocs rather than $579$, an adjusted Rand index of $0.28$, with fewer than one percent of sample nobles keeping an identical set of bloc-mates. But the reach measure itself is stable (correlation $0.87$ with the baseline, $0.96$ for the instrument) and the territorial coefficient is unchanged at $0.0325$ ($p_{\text{2-way}}=0.030$). I take this to be good evidence that my measure of reach is tracking something real and important. Blocs could be divided up in any number of ways; what matters is that, no matter how exactly the network is partitioned, the underlying features of its topology remain constant. It is these topological features that drive the result.
 
+\subsection{Partition dependence}
+\label{app:partition}
+
+The marriage-bloc partition that defines kin-reach is one draw of a
+stochastic algorithm: Louvain community detection returns a different local
+optimum on each run. The replication package freezes the draw used
+throughout this paper, but the deeper question is whether the results
+depend on it. I therefore redraw the partition fifty times (seeding the
+algorithm's random state), recompute every noble's reach and the maternal
+instrument under each draw, and re-estimate the baseline 2SLS of
+Table~\ref{tab:forward}.
+
+The secular-territorial coefficient is positive in all fifty draws, with a
+median of $0.034$ and a range of $[0.017, 0.041]$; it is bloc-cluster
+significant in $47$ of $50$ (worst $p = 0.12$) and two-way significant in
+$40$ of $50$. The variation across draws is not noise around the effect but
+measurement quality: the coefficient rises with the draw's modularity
+($\rho = 0.59$) and with the correlation of its reach measure with the
+baseline's ($\rho = 0.69$). Further, the attenuated draws have
+\emph{stronger} first stages --- a coarser partition tightens the
+mechanical mother--son channel while compressing the across-noble
+variation that identifies the effect. Every failure mode of the partition
+biases the estimate toward zero.
+
+Louvain is known to under-resolve small communities on large graphs
+\citep{fortunato_barthelemy_2007}; the Leiden algorithm
+\citep{traag_2019}, already used for the window series of
+Section~\ref{sub:facts}, avoids this. Rerunning the entire construction
+with Leiden in place of Louvain --- the only change --- yields the
+highest-modularity partition of any draw ($Q = 0.837$, against $0.829$ for
+the baseline partition and a maximum of $0.834$ across the fifty Louvain
+draws) and a secular-territorial coefficient of $0.038$
+($p_{\text{2-way}} = 0.003$). The baseline partition's estimate of $0.033$
+sits below the median of the sweep. That partition was drawn once and
+frozen before any outcome analysis; it happens to be the finest partition
+observed ($579$ blocs, against $555$--$577$ across the redraws). Selecting
+instead on the algorithms' own objective --- the highest-modularity
+Louvain draw --- gives $0.033$ ($p_{\text{2-way}} = 0.004$),
+indistinguishable from the baseline, and the highest-modularity partition
+overall (Leiden) gives $0.038$. So the published estimate is, if anything,
+conservative: better partitions, judged by the objective the detection
+algorithms maximize, give larger effects, and no principled partition
+choice yields a smaller one.
+
+\begin{table}[t]
+\centering
+\caption{Partition dependence of the baseline 2SLS. Each Louvain draw
+re-detects the marriage-blocs with a different random state; reach, the
+instrument, and the father's bloc increment are rebuilt and the baseline
+re-estimated per draw. $Q$ is the partition's modularity on the
+patriline-marriage graph.}
+\label{tab:app_partition}
+\begin{tabular}{lcccc}
+\toprule
+Partition & $Q$ & Blocs & $\beta$ (sec.-terr.) & $p_{\text{2-way}}$ \\
+\midrule
+Baseline (paper) & 0.829 & 579 & 0.033 & 0.005 \\
+50 Louvain redraws & 0.822--0.834 & 555--577 & 0.034 [0.017, 0.041] & $<$0.05 in 40/50 \\
+Leiden & 0.837 & 565 & 0.038 & 0.003 \\
+\midrule
+\multicolumn{5}{p{0.85\textwidth}}{\footnotesize \textit{Notes:} Sweep row
+reports the median and range across draws. Bloc-clustered $p < 0.05$ in
+47 of 50 draws (worst $p = 0.12$); all draws positive. Across draws the
+coefficient rises with partition quality: $\rho(\beta, Q) = 0.59$,
+$\rho(\beta, \text{agreement with baseline reach}) = 0.69$. Seeded and
+reproducible (\texttt{sweep\_partition.py} in the replication package;
+the shipped run is
+\texttt{validation/partition\_sweep/partition\_seed\_sweep.csv}).} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
 \subsection{The reach horizon}
 
 Section~\ref{sec:measurement} argues that four hops is the horizon at which reach varies across nobles while remaining distinct from raw network size. Table~\ref{tab:app_hopsweep} re-estimates the baseline at each horizon from three to six hops, with the instrument recomputed to match. The territorial effect is present and two-way robust at three, four, and five hops, but not six. At six hops, most nobles reach most other contemporaneously alive nobles, so meaningful variation disappears. The three-hop first stage is much weaker ($F=25$, against $339$ at four hops), which additionally motivates the four-hop baseline.

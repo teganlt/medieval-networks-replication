@@ -41,6 +41,14 @@ Results:
   run's, as did `persons_imputed.csv` under the `--validate` rerun.
 - Discrepancies between draft text and reproduction: see the DISCREPANCIES
   section at the bottom.
+- **Addendum (2026-09-04)**: the paper revision adds Appendix C's "Partition
+  dependence" subsection (tab:app_partition). Its numbers come from the
+  50-draw Louvain sweep + Leiden draw shipped at
+  validation/partition_sweep/partition_seed_sweep.csv (script:
+  sweep_partition.py; seed-level determinism verified by rerunning seed 1
+  and the Leiden draw to the digit). tab:app_partition is hand-typed from
+  that CSV, not script-emitted, so verify_against_draft.py does not diff it;
+  the CSV is the source of record.
 
 ## Figures
 
@@ -148,7 +156,7 @@ The extraction prompt is `doc_match_prompt.py` (rendered by 09/10); the coding
 prompt and JSON schema are in `12_recode_subjects.py`. Both are reproduced
 verbatim in the draft's appendix.
 
-### Appendix C — partition-robustness sweep
+### Appendix C — partition dependence (subsection added in the 2026-09-04 revision; tab:app_partition)
 | Claim | Source (stage) | Output |
 |---|---|---|
 | 50 Louvain redraws: secterr β median 0.0342, range [0.0174, 0.0412], all positive; bloc-clustered p<.05 in 47/50 (worst .119); two-way p<.05 in 40/50 (worst .155) | sweep_partition.py (11.1, optional `--sweep`) | validation/partition_sweep/partition_seed_sweep.csv — **verified** (seeded; seed-level reruns reproduce to the digit) |
