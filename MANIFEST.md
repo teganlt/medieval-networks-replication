@@ -94,12 +94,12 @@ compares the numeric rows, not the notes.
 | date coverage 51.0% / 37.8% → 99.8%; 1,722 undated; MAE 5.4 / 18.8; within-10 87.2% / 34.0%; 800–1500 subsample | 01_impute.py (1.2) | output/imputation_validation_metrics.csv |
 | 25,190 letters; 24,130 in 1020–1380; 21,584 in 1100–1300; 91% dated; 99.9% analyse; 53 pontificates; 68.6% mandements | 07_aposcripta_parse.py (3.1) + 13 (3.2) | output/aposcripta_per_doc.csv, aposcripta_summary_stats.csv, console |
 | frame: 252,484 assigned (34.7%); 16,836 → 6,233; 7,810 → 2,610; 21 dynasties | 03_named_anchor_dynasty.py (2.1) | output/dynasty_assignment_summary.csv + console |
-| shortlist screen (pre/post distributions); royal retention | 08_doc_match_build_candidates.py (4.1) | console — NOTE: see DISCREPANCIES 3 (draft sentence misstates both statistics) |
+| shortlist screen: median 1,708 → 106; royal retention | 08_doc_match_build_candidates.py (4.1) | console — **verified** (see DISCREPANCIES 3, resolved) |
 | 96.4% pilot retention of matches under the name filter | doc_match_shortlist_filter.py calibration vs output/reextract_validation_aggregated.csv (frozen) | frozen artifact; see AI-provenance note below |
 | 6,407 high-confidence matches; 521 nobles; 4,536 letters; 23 duplicate pairs → 6,384; ~1.4% out-of-shortlist dropped | 11 (4.2) + 12_doc_match_build_outcomes (4.3) | output/doc_matches_ai_extracted_high.csv, ai_extracted_dropped_records.csv, console |
 | 1,421 of 4,536 (31.3%) live disputes | frozen matched_docs_coded.csv (coding pass; see AI-provenance) | data/frozen/matched_docs_coded.csv |
 | κ table + secterr binary 88.5% / κ 0.62 | recode_agreement.py (4.4) | output/recode_agreement/agreement_report.md — **verified to the digit** |
-| strict both-coders 2SLS 0.025 (p₂ᵥ .002) vs 0.026 | dual_code_strict_iv.R (7.33) | output/clean_iv/reg_dual_code_strict.csv — **verified**; NOTE: the both-coder doc count is **258**, not the draft's 403 (see DISCREPANCIES) |
+| strict both-coders 2SLS on 258 docs: 0.025 (p₂ᵥ .002) vs 0.026 | dual_code_strict_iv.R (7.33) | output/clean_iv/reg_dual_code_strict.csv — **verified** (see DISCREPANCIES 1, resolved) |
 | cross-model audit: 119 records; 108/108 high-confidence correct | v96_match_validation_tallies.py (10.4) over frozen reextract_validation_aggregated.csv | console — **verified** |
 | hand-check: 38 records; 25/25 high-confidence correct | v96 (10.4) over frozen reextract_phase2_validation_sample.csv | console — **verified** |
 | pooled human audit: 186/195 = 95.4% [91.4, 97.9]; researcher 93/97 (3 unsure); RA 93/98 (2 unsure); Fisher p = 1.0; terciles .935/.962/.978 | v95_pooled_precision.py (10.3) over frozen verdicts in validation/ | output/pooled_audit_precision.csv — **verified to the digit** |
@@ -177,24 +177,26 @@ old prominence tests (68, 139), wide break sweep (145), saturation dating
 reported as in progress, with no numbers in the draft); v91_audit_agreement.py
 (per-directory audit scorer superseded by v95/v96 for the draft's numbers).
 
-## DISCREPANCIES between draft and reproduction (report only; tex untouched)
+## DISCREPANCIES between draft and reproduction
 
-1. **"403 documents" (subject-coding appendix)**: the both-coders
+Items 1–3 below were found during the 2026-09-03 verification and are
+**RESOLVED in the paper revision of 2026-09-04** (the version shipped in
+paper/): the both-coders count now reads 258, the auditor-model attribution
+was corrected, and the shortlist sentence now states the verified medians
+(1,708 → 106). They are retained here as a record of the verification.
+
+1. **RESOLVED — "403 documents" (subject-coding appendix)**: the both-coders
    secular-territorial set contains **258** documents (93 API-only, 137
-   agent-only, 1,512 neither; 2,000 total). The regression digits the draft
-   reports for this rebuild (0.025, p₂ᵥ 0.002 vs 0.026) reproduce exactly on
-   the 258-document set, so the coefficient is right and the count is wrong.
-2. **Auditor-model attribution (validation appendix)**: the draft says the
-   119-record audit was by "Claude Opus 4.8"; the project archive
-   (script docstrings, 2026-05-19 notes, measurement audit) records Claude
-   Sonnet-family subagents. No artifact supports the Opus attribution.
-3. **Shortlist screen sentence (matching appendix)**: "cuts the median
-   shortlist from 1,634 to roughly 160" is off at both ends. Pre-screen:
-   1,634 is the **mean**; the median is 1,708 (min 358, p25 1,448, p75 1,804,
-   max 2,307). Post-screen, under the exact production filter (prefix-4 name
-   screen, royals strictly retained, over all 24,130 payloads): **mean 131.9,
-   median 106** — "roughly 160" matches neither statistic. A corrected sentence:
-   the screen cuts the mean shortlist from ~1,634 to ~132 (median 1,708 to 106).
+   agent-only, 1,512 neither; 2,000 total). The regression digits (0.025,
+   p₂ᵥ 0.002 vs 0.026) reproduce exactly on the 258-document set.
+2. **RESOLVED — auditor-model attribution (validation appendix)**: an earlier
+   draft attributed the 119-record audit to a specific frontier model; the
+   project archive records Claude Sonnet-family subagents, and the revision
+   now says "an independent auditor model".
+3. **RESOLVED — shortlist screen sentence (matching appendix)**: pre-screen
+   median is 1,708 (mean 1,634; min 358, p25 1,448, p75 1,804, max 2,307);
+   post-screen, under the exact production filter, median 106 (mean 131.9).
+   The revision states the medians.
 4. **RESOLVED — heiress note "F=354" and "indicator is null"**: previously
    hardcoded prose; 147 now computes and emits both, and the clean-room run
    confirms F_first = 354 and indicator +0.007 (p = 0.88). The draft's claim
