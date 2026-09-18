@@ -168,6 +168,8 @@ def main():
     if args.list:
         for sid, desc, _ in stages:
             skip = "  [skipped by default]" if sid in SKIP_BY_DEFAULT else ""
+            if sid in SWEEP_STAGES:
+                skip = "  [--sweep only]"
             print(f"{sid:>5}  {desc}{skip}")
         return
 
@@ -186,6 +188,11 @@ def main():
     for sid, desc, cmd in stages:
         if sid in SKIP_BY_DEFAULT and not args.rerun_louvain and not args.only:
             print(f"[{sid}] SKIP (frozen artifact in use): {desc}")
+            log.write(f"[{sid}] SKIP {desc}\n")
+            continue
+        if (sid in SWEEP_STAGES and not args.sweep and not args.only
+                and args.from_stage not in SWEEP_STAGES):
+            print(f"[{sid}] SKIP (optional sweep; run with --sweep): {desc}")
             log.write(f"[{sid}] SKIP {desc}\n")
             continue
         print(f"\n[{sid}] {desc}")
